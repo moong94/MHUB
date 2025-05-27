@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 가상환경
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# 로그 파일
+*.log
+
+# 로컬 설정 파일
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# uv 관련
+.uv/
+
+# 테스트 커버리지
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+coverage.xml
+*.cover 
