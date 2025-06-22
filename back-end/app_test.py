@@ -131,6 +131,17 @@ mcp_test_config = {
         "--key",
         "cd69effe-b818-49f6-9d1b-bf86de5e0a19"
       ]
+    },
+    "time-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@yokingma/time-mcp",
+        "--key",
+        "cd69effe-b818-49f6-9d1b-bf86de5e0a19"
+      ]
     }
   }
 }
@@ -186,7 +197,7 @@ async def run_agent():
 
     # 비동기적으로 에이전트 호출
     result = await agent.ainvoke(
-        {"messages": [HumanMessage(content="한국에 대해서 알려줘")]}, 
+        {"messages": [HumanMessage(content="한국에 대해서 알려주고, 한국 시간도 알려줘")]}, 
         config=config
     )
     
