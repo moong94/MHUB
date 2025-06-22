@@ -12,8 +12,11 @@ back-end
         - 활성화 : .venv\Scripts\activate
         - 비활성화 : deactivate
     - 의존성 설치(꼭 가상환경 활성화 후 설치)
-        - requirements 사용 설치 : uv add -r requirements.txt
-        - 단일 모듈 설치 : uv add [모듈명] or uv pip install [모듈명]
+        - requirements 사용하여 기존 모듈 설치 : uv add -r requirements.txt
+        - 추가 모듈 설치 필요 시 : uv pip install [모듈명]
+        - 추가 모듈 설치 시 requirements 업데이트 : uv pip freeze > requirements.txt
+
+        - 아래는 사용하는법 재확인 필요
         - 이미 uv.lock 이 있을경우 : uv sync 로 uv.lock 파일을 읽어서 의존성 설치 -> 기존에 설치한 모듈들은 lock에 기록됨
     - fast api 실행방법
         - 폴더 이동 : cd back-end 
