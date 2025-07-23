@@ -1,0 +1,292 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 7%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 100% 62%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 15 100% 50%;
+  --secondary-foreground: 0 0% 0%;
+  --muted: 0 0% 14.9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 0 0% 14.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --input: 0 0% 14.9%;
+  --ring: 0 100% 62%;
+  --radius: 0.75rem;
+  
+  /* Layout Variables */
+  --sidebar-width: 256px;
+  --mobile-sidebar-width-ratio: 0.8;
+  --top-nav-height: 48px;
+  --mobile-min-touch-target: 44px;
+  
+  /* Breakpoints */
+  --breakpoint-mobile: 768px;
+  --breakpoint-tablet: 1024px;
+  --breakpoint-desktop: 1025px;
+  
+  /* Animation Durations */
+  --animation-fast: 200ms;
+  --animation-normal: 300ms;
+  --animation-slow: 400ms;
+  
+  /* Z-Index Layers */
+  --z-backdrop: 30;
+  --z-sidebar: 40;
+  --z-top-nav: 50;
+  --z-mobile-panel: 50;
+  
+  /* Cyberpunk Theme Colors */
+  /* Status Colors */
+  --status-active: #00ff88;
+  --status-active-bg: rgba(0, 255, 136, 0.1);
+  --status-active-border: rgba(0, 255, 136, 0.3);
+  
+  --status-inactive: #aaaaaa;
+  --status-inactive-bg: rgba(170, 170, 170, 0.1);
+  --status-inactive-border: rgba(170, 170, 170, 0.3);
+  
+  --status-error: #ff0055;
+  --status-error-bg: rgba(255, 0, 85, 0.1);
+  --status-error-border: rgba(255, 0, 85, 0.3);
+  
+  /* Brand Colors */
+  --brand-primary: #ff0040;
+  --brand-secondary: #ff6600;
+  
+  /* Background Colors */
+  --bg-main: #0a0a0f;
+  --bg-card: #12121a;
+  --bg-card-transparent: rgba(18, 18, 26, 0.5);
+  --bg-hover: #1e1e2a;
+  --bg-input: #1e1e2a;
+  
+  /* Border Colors */
+  --border-default: #2a2a3a;
+  --border-light: #3a3a4a;
+  
+  /* Text Colors */
+  --text-secondary: #8a8a9a;
+  --text-tertiary: #aaaaaa;
+  
+  /* Activity Log Colors */
+  --log-success: #00ffaa;
+  --log-info: #00ffff;
+  --log-warning: #ffaa00;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  
+  /* Cyberpunk Theme Color Mappings */
+  /* Status Colors */
+  --color-status-active: var(--status-active);
+  --color-status-active-bg: var(--status-active-bg);
+  --color-status-active-border: var(--status-active-border);
+  --color-status-inactive: var(--status-inactive);
+  --color-status-inactive-bg: var(--status-inactive-bg);
+  --color-status-inactive-border: var(--status-inactive-border);
+  --color-status-error: var(--status-error);
+  --color-status-error-bg: var(--status-error-bg);
+  --color-status-error-border: var(--status-error-border);
+  
+  /* Brand Colors */
+  --color-red: var(--brand-primary);
+  --color-orange: var(--brand-secondary);
+  
+  /* Background Colors */
+  --color-main: var(--bg-main);
+  --color-card: var(--bg-card);
+  --color-card-transparent: var(--bg-card-transparent);
+  --color-hover: var(--bg-hover);
+  --color-input: var(--bg-input);
+  
+  /* Border Colors */
+  --color-gray: var(--border-default);
+  --color-gray-light: var(--border-light);
+  
+  /* Text Colors */
+  --color-muted: var(--text-secondary);
+  --color-muted-light: var(--text-tertiary);
+  
+  /* Log Colors */
+  --color-success: var(--log-success);
+  --color-info: var(--log-info);
+  --color-warning: var(--log-warning);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* 모바일 최적화 */
+  @media (max-width: 768px) {
+    /* 모바일에서 터치 타겟 최소 크기 보장 */
+    button, 
+    [role="button"], 
+    input[type="button"], 
+    input[type="submit"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    /* 모바일에서 텍스트 크기 조정 방지 */
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+    
+    /* 모바일에서 스크롤 영역 개선 */
+    .scrollbar-thin {
+      scrollbar-width: thin;
+    }
+    
+    /* 모바일에서 스크롤바 숨김 */
+    .scrollbar-none {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  
+  /* Common Classes from constants.ts */
+  .transition-all-normal {
+    transition: all var(--animation-normal);
+  }
+
+  .hover-bg {
+    @apply hover:bg-[#1e1e2a];
+  }
+
+  .gradient-button {
+    @apply bg-gradient-to-r from-[#ff0040] to-[#ff6600] hover:from-[#ff0055] hover:to-[#ff7700] text-black font-medium;
+  }
+
+  .border-cyberpunk {
+    @apply border-[#1e1e2a];
+  }
+
+  .bg-dark {
+    @apply bg-[#0a0a0f];
+  }
+
+  .bg-card {
+    @apply bg-[#12121a];
+  }
+
+  /* Sidebar Classes */
+  .sidebar-base {
+    @apply fixed left-0 bg-[#0f0f17] border-r border-[#1e1e2a] transition-all;
+    top: var(--top-nav-height);
+    height: calc(100vh - var(--top-nav-height));
+    transition-duration: var(--animation-normal);
+    z-index: var(--z-sidebar);
+  }
+
+  .mobile-sidebar-width {
+    @apply w-4/5 max-w-xs;
+  }
+
+  .desktop-sidebar-width {
+    width: var(--sidebar-width);
+  }
+
+  .sidebar-hidden {
+    @apply -translate-x-full;
+  }
+}
+
+/* Custom scrollbar for cyberpunk theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a3a;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a4a;
+}
+
+/* Cyberpunk glow effects */
+.glow-text {
+  text-shadow: 0 0 10px rgba(255, 0, 64, 0.7), 0 0 20px rgba(255, 0, 64, 0.5);
+}
+
+.glow-border {
+  box-shadow: 0 0 10px rgba(255, 0, 64, 0.3), 0 0 20px rgba(255, 0, 64, 0.2);
+}
+
+.glow-red {
+  filter: drop-shadow(0 0 5px rgba(255, 0, 64, 0.5));
+}
+
+.glow-orange {
+  filter: drop-shadow(0 0 5px rgba(255, 102, 0, 0.5));
+}
+
+/* Cyberpunk grid background */
+.cyber-grid {
+  background-image: linear-gradient(to right, rgba(30, 30, 42, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(30, 30, 42, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Utility for neon text */
+.neon-red {
+  color: #ff0040;
+  text-shadow: 0 0 5px rgba(255, 0, 64, 0.7);
+}
+
+.neon-orange {
+  color: #ff6600;
+  text-shadow: 0 0 5px rgba(255, 102, 0, 0.7);
+}
