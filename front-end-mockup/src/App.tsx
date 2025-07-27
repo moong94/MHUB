@@ -9,6 +9,7 @@ import DesigningAnimation from "./components/DesigningAnimation";
 import MCPInfoForm from "./components/MCPInfoForm";
 import AppStructureInfo from "./components/AppStructureInfo";
 import AppDeployForm from "./components/AppDeployForm";
+import AppListView from "./components/AppListView";
 
 gsap.registerPlugin(useGSAP, SplitText, TextPlugin);
 
@@ -17,10 +18,20 @@ const STEPS = {
   DESIGN: "DESIGN",
   MCP_INFO: "MCP_INFO",
   DEPLOY: "DEPLOY",
+  LIST: "LIST",
 } as const;
+
+interface AppItem {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  status: "active" | "inactive";
+}
 
 function App() {
   const [step, setStep] = useState<keyof typeof STEPS>(STEPS.COMPOSE);
+  const [apps, setApps] = useState<AppItem[]>([]);
 
   // DESIGN 단계에서 2초 후 MCP_INFO로 자동 이동
   React.useEffect(() => {
@@ -29,6 +40,19 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [step]);
+
+  const handleAppDeploy = (meta: { name: string; description: string }) => {
+    const newApp: AppItem = {
+      id: Date.now().toString(),
+      name: meta.name,
+      description: meta.description || "새로운 앱",
+      createdAt: new Date().toISOString(),
+      status: "active",
+    };
+
+    setApps((prev) => [...prev, newApp]);
+    setStep(STEPS.LIST);
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#fcfdfa] px-4">
@@ -80,13 +104,13 @@ function App() {
           <div className="w-full md:flex-1">
             <AppDeployForm
               onPrev={() => setStep(STEPS.MCP_INFO)}
-              onDeploy={(meta) => {
-                alert(`앱 "${meta.name}"이(가) 성공적으로 배포되었습니다!`);
-                // 실제 배포 로직 연결 가능
-              }}
+              onDeploy={handleAppDeploy}
             />
           </div>
         </div>
+      )}
+      {step === STEPS.LIST && (
+        <AppListView apps={apps} onCreateNew={() => setStep(STEPS.COMPOSE)} />
       )}
     </div>
   );
