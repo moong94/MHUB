@@ -8,6 +8,8 @@ import os
 from dotenv import load_dotenv
 from langchain_core.runnables import RunnableConfig
 from langchain_core.messages import HumanMessage
+import base64
+
 
 load_dotenv(override=True)
 
@@ -107,7 +109,6 @@ async def create_agent(mcp_config=None):
         max_tokens=OUTPUT_TOKEN_INFO["gpt-4o"]["max_tokens"],
     )
 
-    print(tools)
         
     # 비동기 도구를 사용하는 에이전트 생성
     agent = create_react_agent(
@@ -119,70 +120,94 @@ async def create_agent(mcp_config=None):
     return agent
     
 
-mcp_test_config = {
-  "mcpServers": {
-    "duckduckgo-mcp-server": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@smithery/cli@latest",
-        "run",
-        "@nickclyde/duckduckgo-mcp-server",
-        "--key",
-        "cd69effe-b818-49f6-9d1b-bf86de5e0a19"
-      ]
-    },
-    "time-mcp": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@smithery/cli@latest",
-        "run",
-        "@yokingma/time-mcp",
-        "--key",
-        "cd69effe-b818-49f6-9d1b-bf86de5e0a19"
-      ]
-    }
-  }
+# mcp_test_config = {
+#   "mcpServers": {
+#     "duckduckgo-mcp-server": {
+#       "command": "npx",
+#       "args": [
+#         "-y",
+#         "@smithery/cli@latest",
+#         "run",
+#         "@nickclyde/duckduckgo-mcp-server",
+#         "--key",
+#         "cd69effe-b818-49f6-9d1b-bf86de5e0a19"
+#       ]
+#     },
+#     "time-mcp": {
+#       "command": "npx",
+#       "args": [
+#         "-y",
+#         "@smithery/cli@latest",
+#         "run",
+#         "@yokingma/time-mcp",
+#         "--key",
+#         "cd69effe-b818-49f6-9d1b-bf86de5e0a19"
+#       ]
+#     }
+#   }
+# }
+
+# mcp_config = {}
+
+# # mcpServers 형식인지 확인하고 처리
+# if "mcpServers" in mcp_test_config:
+#     # mcpServers 안의 내용을 최상위로 이동
+#     mcp_test_config = mcp_test_config["mcpServers"]
+#     print(
+#         "'mcpServers' 형식이 감지되었습니다. 자동으로 변환합니다."
+#     )
+
+# for tool_name, tool_config in mcp_test_config.items():
+#     # URL 필드 확인 및 transport 설정
+#     if "url" in tool_config:
+#         # URL이 있는 경우 transport를 "sse"로 설정
+#         tool_config["transport"] = "sse"
+#         print(
+#             f"'{tool_name}' 도구에 URL이 감지되어 transport를 'sse'로 설정했습니다."
+#         )
+#     elif "transport" not in tool_config:
+#         # URL이 없고 transport도 없는 경우 기본값 "stdio" 설정
+#         tool_config["transport"] = "stdio"
+#         print(
+#             f"'transport를 'stdio'로 설정했습니다."
+#         )
+
+#     # 필수 필드 확인
+#     if ("command" not in tool_config and "url" not in tool_config):
+#         print(f"'{tool_name}' 도구 설정에는 'command' 또는 'url' 필드가 필요합니다.")
+#     elif "command" in tool_config and "args" not in tool_config:
+#         print(f"'{tool_name}' 도구 설정에는 'args' 필드가 필요합니다.")
+#     elif "command" in tool_config and not isinstance(tool_config["args"], list):
+#         print(f"'{tool_name}' 도구의 'args' 필드는 반드시 배열([]) 형식이어야 합니다.")
+#     else:
+#         # mcp_config에 도구 추가
+#         mcp_config[tool_name] = (
+#             tool_config
+#         )
+
+config = {
+  "githubPersonalAccessToken": "깃액세스 토큰"
 }
 
-mcp_config = {}
+config_b64 = base64.b64encode(json.dumps(config).encode())
 
-# mcpServers 형식인지 확인하고 처리
-if "mcpServers" in mcp_test_config:
-    # mcpServers 안의 내용을 최상위로 이동
-    mcp_test_config = mcp_test_config["mcpServers"]
-    print(
-        "'mcpServers' 형식이 감지되었습니다. 자동으로 변환합니다."
-    )
+smithery_api_key = "스미더리 api key"
 
-for tool_name, tool_config in mcp_test_config.items():
-    # URL 필드 확인 및 transport 설정
-    if "url" in tool_config:
-        # URL이 있는 경우 transport를 "sse"로 설정
-        tool_config["transport"] = "sse"
-        print(
-            f"'{tool_name}' 도구에 URL이 감지되어 transport를 'sse'로 설정했습니다."
-        )
-    elif "transport" not in tool_config:
-        # URL이 없고 transport도 없는 경우 기본값 "stdio" 설정
-        tool_config["transport"] = "stdio"
-        print(
-            f"'transport를 'stdio'로 설정했습니다."
-        )
 
-    # 필수 필드 확인
-    if ("command" not in tool_config and "url" not in tool_config):
-        print(f"'{tool_name}' 도구 설정에는 'command' 또는 'url' 필드가 필요합니다.")
-    elif "command" in tool_config and "args" not in tool_config:
-        print(f"'{tool_name}' 도구 설정에는 'args' 필드가 필요합니다.")
-    elif "command" in tool_config and not isinstance(tool_config["args"], list):
-        print(f"'{tool_name}' 도구의 'args' 필드는 반드시 배열([]) 형식이어야 합니다.")
-    else:
-        # mcp_config에 도구 추가
-        mcp_config[tool_name] = (
-            tool_config
-        )
+# config는 둘중하나로 해야함 (git참고)
+mcp_config = {
+    "duckduckgo-mcp-server": {
+        "url": f"https://server.smithery.ai/@nickclyde/duckduckgo-mcp-server/mcp?api_key={smithery_api_key}",
+        "transport": "streamable_http"
+    },
+    "github-mcp-server": {
+        "url": f"https://server.smithery.ai/@smithery-ai/github/mcp?config={config_b64}&api_key={smithery_api_key}",
+        "transport": "streamable_http"
+    }
+}
+
+print(config_b64)
+
 
 # 비동기 함수로 에이전트 실행
 async def run_agent():
@@ -197,7 +222,8 @@ async def run_agent():
 
     # 비동기적으로 에이전트 호출
     result = await agent.ainvoke(
-        {"messages": [HumanMessage(content="한국에 대해서 알려주고, 한국 시간도 알려줘")]}, 
+        # {"messages": [HumanMessage(content="한국 검색해서 알려주고 https://github.com/tmdrl5779/KTdsTraining 레포에 이슈를 생성해줘 이슈는 샘플로 아무거나넣어줘")]}, 
+        {"messages": [HumanMessage(content="한국 검색해서 알려줘")]}, 
         config=config
     )
     
