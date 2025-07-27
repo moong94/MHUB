@@ -10,9 +10,11 @@ from langchain_core.runnables import RunnableConfig
 from langchain_core.messages import HumanMessage
 import base64
 
+# .env 파일 로드
+load_dotenv()
 
-load_dotenv(override=True)
-
+# 환경변수에서 SMITHERY_API_KEY 가져오기
+SMITHERY_API_KEY = os.getenv("SMITHERY_API_KEY")
 
 OUTPUT_TOKEN_INFO = {
     "claude-3-5-sonnet-latest": {"max_tokens": 8192},
@@ -191,17 +193,15 @@ config = {
 
 config_b64 = base64.b64encode(json.dumps(config).encode())
 
-smithery_api_key = "스미더리 api key"
-
 
 # config는 둘중하나로 해야함 (git참고)
 mcp_config = {
     "duckduckgo-mcp-server": {
-        "url": f"https://server.smithery.ai/@nickclyde/duckduckgo-mcp-server/mcp?api_key={smithery_api_key}",
+        "url": f"https://server.smithery.ai/@nickclyde/duckduckgo-mcp-server/mcp?api_key={SMITHERY_API_KEY}",
         "transport": "streamable_http"
     },
     "github-mcp-server": {
-        "url": f"https://server.smithery.ai/@smithery-ai/github/mcp?config={config_b64}&api_key={smithery_api_key}",
+        "url": f"https://server.smithery.ai/@smithery-ai/github/mcp?config={config_b64}&api_key={SMITHERY_API_KEY}",
         "transport": "streamable_http"
     }
 }
