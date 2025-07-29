@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Bot, Settings, Rocket } from "lucide-react"
+import { Bot, Settings, Rocket, Cpu } from "lucide-react"
 import type { CreationStep } from "../hooks/use-app-creation-workflow"
 
 interface WorkflowStepsProps {
@@ -22,6 +22,7 @@ export function WorkflowSteps({
 }: WorkflowStepsProps) {
   const steps = [
     { id: "chat", label: "Chat", icon: Bot },
+    { id: "building", label: "Building", icon: Cpu },
     { id: "structure", label: "Structure", icon: Settings },
     { id: "mcp", label: "MCP Config", icon: Settings },
     { id: "publish", label: "Publish", icon: Rocket },

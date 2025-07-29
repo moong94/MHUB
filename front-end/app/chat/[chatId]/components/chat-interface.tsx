@@ -2,6 +2,7 @@
 
 import { ChatMessageArea } from "./chat-message-area"
 import { WorkflowSteps } from "./workflow-steps"
+import { BuildingPanel } from "./building-panel"
 import { StructureReviewPanel } from "./structure-review-panel"
 import { MCPConfigPanel } from "./mcp-config-panel"
 import { PublishAppPanel } from "./publish-app-panel"
@@ -89,11 +90,20 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
         />
       </div>
 
-      {/* 모바일 백드롭 (Structure, MCP, Publish 패널용) */}
+      {/* 모바일 백드롭 (Building, Structure, MCP, Publish 패널용) */}
       {isMobile && showMobilePanel && shouldShowSidePanel && (
         <div 
           className="fixed inset-0 bg-black/50 z-40" 
           onClick={() => setShowMobilePanel(false)}
+        />
+      )}
+
+      {/* Building Section */}
+      {currentStep === "building" && sidePanelVisible && (
+        <BuildingPanel
+          isMobile={isMobile}
+          showMobilePanel={showMobilePanel}
+          onCloseMobilePanel={() => setShowMobilePanel(false)}
         />
       )}
 

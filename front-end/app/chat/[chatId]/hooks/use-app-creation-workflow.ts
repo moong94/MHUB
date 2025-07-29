@@ -1,7 +1,7 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type { App, AppStructure, Chat } from "@/lib/types"
 
-export type CreationStep = "chat" | "structure" | "mcp" | "publish"
+export type CreationStep = "building" | "chat" | "structure" | "mcp" | "publish"
 
 interface MCPConfig {
   apiKey: string
@@ -26,6 +26,18 @@ export function useAppCreationWorkflow() {
     name: "",
     description: "",
   })
+
+  // Building 단계에서 3초 후 자동으로 structure 단계로 이동
+  useEffect(() => {
+    if (currentStep === "building") {
+      const timer = setTimeout(() => {
+        setAppStructure(generateAppStructure())
+        setCurrentStep("structure")
+      }, 3000)
+      
+      return () => clearTimeout(timer)
+    }
+  }, [currentStep])
 
   const generateAppStructure = (): AppStructure => {
     return {
@@ -71,8 +83,7 @@ export function useAppCreationWorkflow() {
 
   const progressToNextStep = (chat: Chat) => {
     if (currentStep === "chat" && chat.messages.length >= 4) {
-      setAppStructure(generateAppStructure())
-      setCurrentStep("structure")
+      setCurrentStep("building")
     } else if (currentStep === "structure") {
       setAppStructure(generateAppStructure())
     }
