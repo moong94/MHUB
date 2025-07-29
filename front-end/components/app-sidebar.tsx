@@ -1,7 +1,6 @@
 "use client"
 
-import { usePathname } from "next/navigation"
-import { Grid3X3, Plus, Sparkles } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import {
   Sidebar,
   SidebarContent,
@@ -13,10 +12,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
+  useSidebar,
 } from "@/components/ui/sidebar"
-import { Button } from "@/components/ui/button"
+import { useIsMobile } from "@/hooks/use-media-query"
 import type { Chat } from "@/lib/types"
 import { cn } from "@/lib/utils"
+import { Grid3X3, Plus, Sparkles } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 interface AppSidebarProps {
   chats: Chat[]
@@ -33,6 +35,9 @@ export function AppSidebar({
   onDashboardClick, 
   selectedChatId 
 }: AppSidebarProps) {
+  const isMobile = useIsMobile()
+  const { toggleSidebar } = useSidebar()
+
   const pathname = usePathname()
   const isOnDashboard = pathname === "/"
 
@@ -41,7 +46,10 @@ export function AppSidebar({
       <SidebarHeader className="p-4 space-y-2">
         <Button
           variant="gradient"
-          onClick={onNewChat}
+          onClick={() => {
+            onNewChat()
+            if (isMobile) toggleSidebar()
+          }}
           className="w-full justify-start h-11 transition-all duration-150 active:scale-95 font-medium"
         >
           <Plus className="w-4 h-4 mr-2" />
@@ -50,7 +58,10 @@ export function AppSidebar({
 
         <Button 
           variant="ghost" 
-          onClick={onDashboardClick} 
+          onClick={() => {
+            onDashboardClick()
+            if (isMobile) toggleSidebar()
+          }} 
           className={cn(
             "w-full justify-start hover-bg h-11 transition-all duration-150 active:scale-95 text-white",
             isOnDashboard && "bg-cyber-hover border-l-2 border-cyber-red text-cyber-red"
@@ -74,7 +85,10 @@ export function AppSidebar({
               {chats.map((chat) => (
                 <SidebarMenuItem key={chat.id}>
                   <SidebarMenuButton
-                    onClick={() => onChatClick(chat.id)}
+                    onClick={() => {
+                      onChatClick(chat.id)
+                      if (isMobile) toggleSidebar()
+                    }}
                     className={cn(
                       "w-full justify-start text-left h-auto p-3 hover-bg transition-all duration-150 active:scale-95 rounded-md mx-2 mb-1",
                       selectedChatId === chat.id && "bg-cyber-hover border-l-2 border-cyber-red text-white"
