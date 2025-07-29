@@ -54,6 +54,24 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // 사이버펑크 테마 색상
+        cyber: {
+          main: "var(--color-cyber-main)",
+          card: "var(--color-cyber-card)", 
+          hover: "var(--color-cyber-hover)",
+          border: "var(--color-cyber-border)",
+          "border-light": "var(--color-cyber-border-light)",
+          "text-secondary": "var(--color-cyber-text-secondary)",
+          "text-tertiary": "var(--color-cyber-text-tertiary)",
+          red: "var(--color-cyber-red)",
+          orange: "var(--color-cyber-orange)",
+        },
+        // 상태 색상
+        status: {
+          active: "var(--color-status-active)",
+          inactive: "var(--color-status-inactive)", 
+          error: "var(--color-status-error)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

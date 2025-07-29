@@ -4,6 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Shadcn UI 기본 색상 */
   --background: 0 0% 3.9%;
   --foreground: 0 0% 98%;
   --card: 0 0% 7%;
@@ -24,69 +25,36 @@
   --input: 0 0% 14.9%;
   --ring: 0 100% 62%;
   --radius: 0.75rem;
-  
-  /* Layout Variables */
-  --sidebar-width: 256px;
-  --mobile-sidebar-width-ratio: 0.8;
-  --top-nav-height: 48px;
-  --mobile-min-touch-target: 44px;
-  
-  /* Breakpoints */
-  --breakpoint-mobile: 768px;
-  --breakpoint-tablet: 1024px;
-  --breakpoint-desktop: 1025px;
-  
-  /* Animation Durations */
-  --animation-fast: 200ms;
-  --animation-normal: 300ms;
-  --animation-slow: 400ms;
-  
-  /* Z-Index Layers */
-  --z-backdrop: 30;
-  --z-sidebar: 40;
-  --z-top-nav: 50;
-  --z-mobile-panel: 50;
-  
-  /* Cyberpunk Theme Colors */
-  /* Status Colors */
+
+  /* 사이버펑크 테마 색상 */
+  --cyber-main: #0a0a0f;
+  --cyber-card: #12121a;
+  --cyber-hover: #1e1e2a;
+  --cyber-border: #2a2a3a;
+  --cyber-border-light: #3a3a4a;
+  --cyber-text-secondary: #8a8a9a;
+  --cyber-text-tertiary: #aaaaaa;
+  --cyber-red: #ff0040;
+  --cyber-orange: #ff6600;
+
+  /* 상태 색상 */
   --status-active: #00ff88;
-  --status-active-bg: rgba(0, 255, 136, 0.1);
-  --status-active-border: rgba(0, 255, 136, 0.3);
-  
   --status-inactive: #aaaaaa;
-  --status-inactive-bg: rgba(170, 170, 170, 0.1);
-  --status-inactive-border: rgba(170, 170, 170, 0.3);
-  
   --status-error: #ff0055;
-  --status-error-bg: rgba(255, 0, 85, 0.1);
-  --status-error-border: rgba(255, 0, 85, 0.3);
-  
-  /* Brand Colors */
-  --brand-primary: #ff0040;
-  --brand-secondary: #ff6600;
-  
-  /* Background Colors */
-  --bg-main: #0a0a0f;
-  --bg-card: #12121a;
-  --bg-card-transparent: rgba(18, 18, 26, 0.5);
-  --bg-hover: #1e1e2a;
-  --bg-input: #1e1e2a;
-  
-  /* Border Colors */
-  --border-default: #2a2a3a;
-  --border-light: #3a3a4a;
-  
-  /* Text Colors */
-  --text-secondary: #8a8a9a;
-  --text-tertiary: #aaaaaa;
-  
-  /* Activity Log Colors */
-  --log-success: #00ffaa;
-  --log-info: #00ffff;
-  --log-warning: #ffaa00;
+
+  /* 사이드바 색상 */
+  --sidebar: var(--cyber-main);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--cyber-red);
+  --sidebar-primary-foreground: var(--background);
+  --sidebar-accent: var(--cyber-hover);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--cyber-border);
+  --sidebar-ring: var(--cyber-red);
 }
 
 @theme inline {
+  /* Shadcn UI 색상 매핑 */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -110,42 +78,32 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  
-  /* Cyberpunk Theme Color Mappings */
-  /* Status Colors */
+
+  /* 사이버펑크 테마 색상 */
+  --color-cyber-main: var(--cyber-main);
+  --color-cyber-card: var(--cyber-card);
+  --color-cyber-hover: var(--cyber-hover);
+  --color-cyber-border: var(--cyber-border);
+  --color-cyber-border-light: var(--cyber-border-light);
+  --color-cyber-text-secondary: var(--cyber-text-secondary);
+  --color-cyber-text-tertiary: var(--cyber-text-tertiary);
+  --color-cyber-red: var(--cyber-red);
+  --color-cyber-orange: var(--cyber-orange);
+
+  /* 상태 색상 */
   --color-status-active: var(--status-active);
-  --color-status-active-bg: var(--status-active-bg);
-  --color-status-active-border: var(--status-active-border);
   --color-status-inactive: var(--status-inactive);
-  --color-status-inactive-bg: var(--status-inactive-bg);
-  --color-status-inactive-border: var(--status-inactive-border);
   --color-status-error: var(--status-error);
-  --color-status-error-bg: var(--status-error-bg);
-  --color-status-error-border: var(--status-error-border);
-  
-  /* Brand Colors */
-  --color-red: var(--brand-primary);
-  --color-orange: var(--brand-secondary);
-  
-  /* Background Colors */
-  --color-main: var(--bg-main);
-  --color-card: var(--bg-card);
-  --color-card-transparent: var(--bg-card-transparent);
-  --color-hover: var(--bg-hover);
-  --color-input: var(--bg-input);
-  
-  /* Border Colors */
-  --color-gray: var(--border-default);
-  --color-gray-light: var(--border-light);
-  
-  /* Text Colors */
-  --color-muted: var(--text-secondary);
-  --color-muted-light: var(--text-tertiary);
-  
-  /* Log Colors */
-  --color-success: var(--log-success);
-  --color-info: var(--log-info);
-  --color-warning: var(--log-warning);
+
+  /* 사이드바 색상 */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 @layer base {
@@ -156,10 +114,9 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
-  
-  /* 모바일 최적화 */
+
+  /* 모바일 터치 타겟 최적화 */
   @media (max-width: 768px) {
-    /* 모바일에서 터치 타겟 최소 크기 보장 */
     button, 
     [role="button"], 
     input[type="button"], 
@@ -167,126 +124,93 @@
       min-height: 44px;
       min-width: 44px;
     }
-    
-    /* 모바일에서 텍스트 크기 조정 방지 */
+
     html {
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
     }
-    
-    /* 모바일에서 스크롤 영역 개선 */
-    .scrollbar-thin {
-      scrollbar-width: thin;
-    }
-    
-    /* 모바일에서 스크롤바 숨김 */
+
     .scrollbar-none {
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
-    
+
     .scrollbar-none::-webkit-scrollbar {
       display: none;
     }
   }
-  
-  /* Common Classes from constants.ts */
-  .transition-all-normal {
-    transition: all var(--animation-normal);
+
+  /* 실제로 사용되는 유틸리티 클래스들만 유지 */
+  .gradient-text {
+    @apply bg-gradient-to-r from-cyber-red to-cyber-orange bg-clip-text text-transparent;
   }
 
-  .hover-bg {
-    @apply hover:bg-[#1e1e2a];
+  .card-transparent {
+    @apply bg-cyber-card/50 border-cyber-border;
   }
 
-  .gradient-button {
-    @apply bg-gradient-to-r from-[#ff0040] to-[#ff6600] hover:from-[#ff0055] hover:to-[#ff7700] text-black font-medium;
+  .card-hover {
+    @apply bg-cyber-hover border-cyber-border;
   }
 
-  .border-cyberpunk {
-    @apply border-[#1e1e2a];
+  /* 사이드바 애니메이션 */
+  [data-slot="sidebar-container"] {
+    transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
-  .bg-dark {
-    @apply bg-[#0a0a0f];
+  [data-state="collapsed"][data-collapsible="offcanvas"] [data-slot="sidebar-container"] {
+    width: 0 !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
   }
 
-  .bg-card {
-    @apply bg-[#12121a];
+  [data-state="collapsed"][data-collapsible="offcanvas"] [data-slot="sidebar-gap"] {
+    width: 0 !important;
+    transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
-  /* Sidebar Classes */
-  .sidebar-base {
-    @apply fixed left-0 bg-[#0f0f17] border-r border-[#1e1e2a] transition-all;
-    top: var(--top-nav-height);
-    height: calc(100vh - var(--top-nav-height));
-    transition-duration: var(--animation-normal);
-    z-index: var(--z-sidebar);
+  .group\/sidebar-wrapper:has([data-state="expanded"]) main {
+    margin-left: 16rem;
+    transition: margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .mobile-sidebar-width {
-    @apply w-4/5 max-w-xs;
-  }
-
-  .desktop-sidebar-width {
-    width: var(--sidebar-width);
-  }
-
-  .sidebar-hidden {
-    @apply -translate-x-full;
+  .group\/sidebar-wrapper:has([data-state="collapsed"]) main {
+    margin-left: 0;
+    transition: margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
-/* Custom scrollbar for cyberpunk theme */
+/* 브라우저 autofill 스타일링 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--cyber-card) inset !important;
+  -webkit-text-fill-color: white !important;
+  box-shadow: 0 0 0 30px var(--cyber-card) inset !important;
+  color: white !important;
+  border-color: var(--cyber-border) !important;
+}
+
+/* 커스텀 스크롤바 */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0f;
+  background: var(--cyber-main);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2a2a3a;
+  background: var(--cyber-border);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a4a;
-}
-
-/* Cyberpunk glow effects */
-.glow-text {
-  text-shadow: 0 0 10px rgba(255, 0, 64, 0.7), 0 0 20px rgba(255, 0, 64, 0.5);
-}
-
-.glow-border {
-  box-shadow: 0 0 10px rgba(255, 0, 64, 0.3), 0 0 20px rgba(255, 0, 64, 0.2);
-}
-
-.glow-red {
-  filter: drop-shadow(0 0 5px rgba(255, 0, 64, 0.5));
-}
-
-.glow-orange {
-  filter: drop-shadow(0 0 5px rgba(255, 102, 0, 0.5));
-}
-
-/* Cyberpunk grid background */
-.cyber-grid {
-  background-image: linear-gradient(to right, rgba(30, 30, 42, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(30, 30, 42, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-/* Utility for neon text */
-.neon-red {
-  color: #ff0040;
-  text-shadow: 0 0 5px rgba(255, 0, 64, 0.7);
-}
-
-.neon-orange {
-  color: #ff6600;
-  text-shadow: 0 0 5px rgba(255, 102, 0, 0.7);
+  background: var(--cyber-border-light);
 }

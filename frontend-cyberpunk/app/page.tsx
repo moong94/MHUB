@@ -1,128 +1,218 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { TopNavBar } from "@/components/top-nav-bar"
-import { SidebarDesktop } from "@/components/sidebar-desktop"
-import { SidebarMobile } from "@/components/sidebar-mobile"
-import { AppDashboard } from "@/components/app-dashboard"
-import { CommandPalette } from "@/components/command-palette"
 import { useAppContext } from "@/lib/context"
-import { useMobileNavigation } from "@/hooks/use-mobile-navigation"
-import { gsap } from "gsap"
-import { Chat } from "@/lib/types"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { Plus, Search, Trash2, Activity, Users, AlertTriangle, Sparkles } from "lucide-react"
+import type { App, Chat } from "@/lib/types"
 
 export default function Home() {
   const router = useRouter()
-  const [commandOpen, setCommandOpen] = useState(false)
-  const { apps, chats, addChat, removeApp } = useAppContext()
-  const { isSidebarOpen, toggleSidebar, closeSidebar, isMobile } = useMobileNavigation()
-
-  const handleNewChat = () => {
-    const newChat: Chat = {
-      id: `chat-${Date.now()}`,
-      title: "New App Creation",
-      messages: [],
-      createdAt: new Date().toISOString(),
-    }
-
-    // Context를 통해 즉시 추가 (동기적 처리)
-    addChat(newChat)
-    
-    // 즉시 라우팅
-    router.push(`/chat/${newChat.id}`)
-  }
+  const { apps, removeApp, addChat } = useAppContext()
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filter, setFilter] = useState<"all" | "active" | "inactive" | "error">("all")
 
   const handleAppClick = (appId: string) => {
     router.push(`/apps/${appId}`)
   }
 
-  const handleChatClick = (chatId: string) => {
-    router.push(`/chat/${chatId}`)
-  }
-
-  // Keyboard shortcut for command palette
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault()
-        setCommandOpen(true)
-      }
+  const handleNewApp = () => {
+    // 새 앱 생성은 새 채팅을 통해 이루어짐 - layout과 동일한 로직
+    const newChat: Chat = {
+      id: `chat-${Date.now()}`,
+      title: "New App Creation", 
+      messages: [],
+      createdAt: new Date().toISOString(),
     }
 
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [])
+    addChat(newChat)
+    router.push(`/chat/${newChat.id}`)
+  }
 
-  // GSAP entrance animation
-  useEffect(() => {
-    gsap.fromTo(".main-content", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" })
-  }, [])
+  const filteredApps = apps.filter((app) => {
+    const matchesSearch =
+      app.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      app.description.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesFilter = filter === "all" || app.status === filter
+    return matchesSearch && matchesFilter
+  })
+
+  const getStatusVariant = (status: App["status"]) => {
+    switch (status) {
+      case "active":
+        return "status"
+      case "inactive":
+        return "inactive"
+      case "error":
+        return "error"
+      default:
+        return "cyber"
+    }
+  }
+
+  const getStatusIcon = (status: App["status"]) => {
+    switch (status) {
+      case "active":
+        return <Activity className="w-3 h-3" />
+      case "inactive":
+        return <Users className="w-3 h-3" />
+      case "error":
+        return <AlertTriangle className="w-3 h-3" />
+    }
+  }
+
+
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white overflow-hidden">
-      <TopNavBar 
-        onToggleSidebar={toggleSidebar} 
-        onOpenCommand={() => setCommandOpen(true)}
-        isMobile={isMobile}
-      />
+    <div className="h-full overflow-y-auto">
+      <div className="p-4 space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold gradient-text">
+              Apps Dashboard
+            </h1>
+            <p className="text-cyber-text-secondary mt-2 text-sm md:text-base">
+              Manage and monitor your AI-powered applications
+            </p>
+          </div>
 
-      <div className="flex h-[calc(100vh-3rem)] pt-12">
-        {/* PC용 사이드바 */}
-        {!isMobile && (
-          <SidebarDesktop
-            open={isSidebarOpen}
-            chats={chats}
-            onNewChat={handleNewChat}
-            onChatClick={handleChatClick}
-            onDashboardClick={() => router.push("/")}
-            selectedChatId={null}
-          />
+          <Button
+            variant="gradient"
+            onClick={handleNewApp}
+            className="h-10 md:h-11 shrink-0"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            <span className="hidden sm:inline">Create New App</span>
+            <span className="sm:hidden">New App</span>
+          </Button>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1 max-w-none sm:max-w-md">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-cyber-text-secondary" />
+            <Input
+              placeholder="Search apps..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-12"
+            />
+          </div>
+
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {(["all", "active", "inactive", "error"] as const).map((status) => (
+              <Button
+                key={status}
+                variant={filter === status ? "cyber" : "outline"}
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setFilter(status)
+                }}
+                className={cn(
+                  "capitalize shrink-0 h-10 px-4 md:h-11 md:px-4"
+                )}
+              >
+                {status}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        {filteredApps.length === 0 ? (
+          <div className="text-center py-4">
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-cyber-hover flex items-center justify-center mx-auto mb-4">
+              <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-cyber-text-secondary" />
+            </div>
+            <h3 className="text-lg md:text-xl font-medium mb-2">No apps found</h3>
+            <p className="text-cyber-text-secondary mb-4 max-w-md mx-auto text-sm md:text-base px-4">
+              {searchQuery || filter !== "all"
+                ? "Try adjusting your search or filters"
+                : "Get started by creating your first AI-powered app"}
+            </p>
+            {!searchQuery && filter === "all" && (
+              <Button
+                variant="gradient"
+                onClick={handleNewApp}
+                className="h-10 md:h-11"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Create Your First App</span>
+                <span className="sm:hidden">Create App</span>
+              </Button>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredApps.map((app) => (
+              <Card
+                key={app.id}
+                className="group cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-cyber-red/30 card-transparent overflow-hidden"
+                onClick={() => handleAppClick(app.id)}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-cyber-red/5 to-cyber-orange/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+
+                <CardHeader className="pb-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-base md:text-lg group-hover:text-cyber-red transition-colors truncate">
+                        {app.name}
+                      </CardTitle>
+                      <p className="text-xs md:text-sm text-cyber-text-secondary mt-2 line-clamp-2 md:line-clamp-3">
+                        {app.description}
+                      </p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        removeApp(app.id)
+                      }}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity hover:bg-status-error/20 hover:text-status-error h-8 w-8 shrink-0"
+                    >
+                      <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
+                    </Button>
+                  </div>
+                </CardHeader>
+
+                <CardContent className="space-y-4 pt-0">
+                  <div className="flex items-center justify-between">
+                    <Badge variant={getStatusVariant(app.status)} className="text-xs">
+                      {getStatusIcon(app.status)}
+                      <span className="ml-1 capitalize">{app.status}</span>
+                    </Badge>
+                    <span className="text-xs text-cyber-text-secondary">
+                      {new Date(app.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4 text-center">
+                    <div className="p-2 rounded-lg card-hover">
+                      <div className="text-sm md:text-lg font-semibold text-cyber-red truncate">
+                        {app.traffic > 999 ? `${Math.floor(app.traffic / 1000)}k` : app.traffic.toLocaleString()}
+                      </div>
+                      <div className="text-xs text-cyber-text-secondary">Traffic</div>
+                    </div>
+                    <div className="p-2 rounded-lg card-hover">
+                      <div className="text-sm md:text-lg font-semibold text-cyber-orange">{app.usage}%</div>
+                      <div className="text-xs text-cyber-text-secondary">Usage</div>
+                    </div>
+                    <div className="p-2 rounded-lg card-hover">
+                      <div className="text-sm md:text-lg font-semibold text-status-error">{app.errors}</div>
+                      <div className="text-xs text-cyber-text-secondary">Errors</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         )}
-
-        {/* 모바일용 사이드바 */}
-        {isMobile && (
-          <SidebarMobile
-            open={isSidebarOpen}
-            chats={chats}
-            onNewChat={handleNewChat}
-            onChatClick={handleChatClick}
-            onDashboardClick={() => router.push("/")}
-            onClose={closeSidebar}
-            selectedChatId={null}
-          />
-        )}
-
-        <main
-          className={`main-content flex-1 transition-all duration-300 ${
-            !isMobile && isSidebarOpen ? "ml-64" : "ml-0"
-          }`}
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0) 70%), radial-gradient(circle at 85% 20%, rgba(255, 0, 128, 0.03) 0%, rgba(0, 0, 0, 0) 70%)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <AppDashboard
-            apps={apps}
-            onAppClick={handleAppClick}
-            onNewApp={handleNewChat}
-            onDeleteApp={(id) => removeApp(id)}
-          />
-        </main>
       </div>
-
-      <CommandPalette
-        open={commandOpen}
-        onOpenChange={setCommandOpen}
-        onNewChat={handleNewChat}
-        onDashboard={() => router.push("/")}
-        apps={apps}
-        chats={chats}
-        onAppClick={handleAppClick}
-        onChatClick={handleChatClick}
-      />
     </div>
   )
 }

@@ -218,41 +218,36 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
         className={cn(
           "flex flex-col h-full transition-all duration-300",
           // 모바일에서는 항상 full width, 데스크톱에서는 사이드 패널 여부에 따라 조정
-          isMobile ? "w-full" : (shouldShowSidePanel ? "w-1/2 border-r border-[#1e1e2a]" : "w-full")
+          isMobile ? "w-full" : (shouldShowSidePanel ? "w-1/2 border-r border-cyber-hover" : "w-full")
         )}
       >
         {/* 헤더 - 고정 */}
-        <div className="p-4 border-b border-[#1e1e2a] flex-shrink-0">
+        <div className="p-4 border-b border-cyber-hover flex-shrink-0">
           <div className="flex items-center gap-4">
             <Button 
               variant="ghost" 
               size="icon" 
               onClick={onBackToDashboard} 
-              className="hover:bg-[#1e1e2a] h-8 w-8 md:h-10 md:w-10"
+              className="h-8 w-8 md:h-10 md:w-10"
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <div className="flex-1 min-w-0">
               <h2 className="text-base md:text-lg font-semibold truncate">{chat.title}</h2>
-              <div               className={cn(
+              <div className={cn(
                 "flex items-center gap-2 mt-2",
                 isMobile ? "overflow-x-auto scrollbar-none pb-1" : "flex-wrap"
               )}>
                 {steps.map((step, index) => (
                   <div key={step.id} className="flex items-center shrink-0">
                     <Badge
-                      variant={currentStep === step.id ? "default" : "outline"}
-                      className={cn(
-                        "text-xs",
-                        currentStep === step.id
-                          ? "bg-gradient-to-r from-[#ff0040] to-[#ff6600] text-black"
-                          : "bg-transparent border-[#2a2a3a] text-[#8a8a9a]",
-                      )}
+                      variant={currentStep === step.id ? "gradient" : "outline"}
+                      className="text-xs"
                     >
                       <step.icon className="w-3 h-3 mr-1" />
                       <span className={isMobile ? "hidden sm:inline" : ""}>{step.label}</span>
                     </Badge>
-                    {index < steps.length - 1 && <div className="w-2 h-px bg-[#2a2a3a] mx-1" />}
+                    {index < steps.length - 1 && <div className="w-2 h-px bg-cyber-border mx-1" />}
                   </div>
                 ))}
               </div>
@@ -264,7 +259,7 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowMobilePanel(!showMobilePanel)}
-                className="hover:bg-[#1e1e2a] h-8 px-4 text-xs font-medium"
+                className="h-8 px-4 text-xs font-medium"
               >
                 {showMobilePanel ? "Hide" : "Show"}
               </Button>
@@ -286,21 +281,21 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
                     className={cn(
                       "rounded-full flex items-center justify-center flex-shrink-0",
                       isMobile ? "w-8 h-8" : "w-10 h-10",
-                      msg.role === "user" ? "bg-gradient-to-br from-[#ff0040] to-[#ff6600]" : "bg-[#1e1e2a]",
+                      msg.role === "user" ? "bg-gradient-to-br from-cyber-red to-cyber-orange" : "bg-cyber-hover",
                     )}
                   >
                     {msg.role === "user" ? (
                       <User className={cn(isMobile ? "w-4 h-4" : "w-5 h-5", "text-black")} />
                     ) : (
-                      <Sparkles className={cn(isMobile ? "w-4 h-4" : "w-5 h-5", "text-[#ff0040]")} />
+                      <Sparkles className={cn(isMobile ? "w-4 h-4" : "w-5 h-5", "text-cyber-red")} />
                     )}
                   </div>
                   <div
                     className={cn(
                       "rounded-2xl p-4",
                       msg.role === "user"
-                        ? "bg-gradient-to-br from-[#ff0040] to-[#ff6600] text-black font-semibold"
-                        : "bg-[#1e1e2a] border border-[#2a2a3a]",
+                        ? "bg-gradient-to-br from-cyber-red to-cyber-orange text-black font-semibold"
+                        : "bg-cyber-hover border border-cyber-border",
                     )}
                   >
                     <p className={cn("text-sm", msg.role === "user" ? "font-semibold" : "")}>{msg.content}</p>
@@ -314,7 +309,7 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
         </ScrollArea>
 
         {/* 입력 영역 - 고정 */}
-        <div className="p-4 border-t border-[#1e1e2a] flex-shrink-0">
+        <div className="p-4 border-t border-cyber-hover flex-shrink-0">
           <div className="flex gap-2">
             <Input
               ref={inputRef}
@@ -330,12 +325,13 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
                   : "Ask anything about your app..."
               }
               onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-              className="flex-1 bg-[#12121a] border-[#2a2a3a] focus-visible:ring-[#ff0040] h-10 md:h-11"
+              className="flex-1"
             />
             <Button
+              variant="gradient"
               onClick={sendMessage}
               disabled={!message.trim()}
-              className="bg-gradient-to-r from-[#ff0040] to-[#ff6600] hover:from-[#ff0055] hover:to-[#ff7700] text-black h-10 md:h-11 px-4"
+              className="h-10 md:h-11 px-4"
             >
               <Send className="w-4 h-4" />
             </Button>
@@ -355,7 +351,7 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
       {currentStep === "structure" && appStructure && sidePanelVisible && (
         <div className={cn(
           "h-full overflow-y-auto transition-all duration-300",
-          isMobile ? (showMobilePanel ? "fixed inset-x-0 top-16 bottom-0 bg-[#0a0a0f] z-50" : "hidden") : "w-1/2"
+          isMobile ? (showMobilePanel ? "fixed inset-x-0 top-16 bottom-0 bg-cyber-main z-50" : "hidden") : "w-1/2"
         )}>
           <div className="p-4 space-y-4">
             <div className="flex items-center gap-4 mb-4">
@@ -363,36 +359,36 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
                 variant="ghost" 
                 size="icon" 
                 onClick={isMobile ? () => setShowMobilePanel(false) : handleGoBack} 
-                className="hover:bg-[#1e1e2a] h-8 w-8 md:h-10 md:w-10"
+                className="h-8 w-8 md:h-10 md:w-10"
               >
                 <ArrowLeft className="w-4 h-4" />
               </Button>
               <div className="flex-1 min-w-0">
-                <h3 className="text-lg md:text-2xl font-semibold bg-gradient-to-r from-[#ff0040] to-[#ff6600] bg-clip-text text-transparent">
+                <h3 className="text-lg md:text-2xl font-semibold gradient-text">
                   App Structure Review
                 </h3>
-                <p className="text-xs md:text-sm text-[#8a8a9a] mt-2">
+                <p className="text-xs md:text-sm text-cyber-text-secondary mt-2">
                   Review the generated app structure and approve or request modifications.
                 </p>
               </div>
             </div>
 
-            <Card className="border-[#2a2a3a] bg-[#12121a]/50">
+            <Card>
               <CardHeader>
-                <CardTitle className="text-[#ff0040]">Components</CardTitle>
+                <CardTitle>Components</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {appStructure.components.map((component, index: number) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-4 bg-[#1e1e2a] rounded-lg border border-[#2a2a3a]"
+                      className="flex items-center justify-between p-4 card-hover rounded-lg"
                     >
                       <div>
                         <div className="font-medium">{component.name}</div>
-                        <div className="text-sm text-[#8a8a9a]">{component.description}</div>
+                        <div className="text-sm text-cyber-text-secondary">{component.description}</div>
                       </div>
-                      <Badge variant="outline" className="bg-[#2a2a3a]/50 border-[#3a3a4a] text-[#aaaaaa]">
+                      <Badge variant="outline">
                         {component.type}
                       </Badge>
                     </div>
@@ -401,22 +397,22 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
               </CardContent>
             </Card>
 
-            <Card className="border-[#2a2a3a] bg-[#12121a]/50">
+            <Card>
               <CardHeader>
-                <CardTitle className="text-[#ff6600]">APIs</CardTitle>
+                <CardTitle className="text-cyber-orange">APIs</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {appStructure.apis.map((api, index: number) => (
-                    <div key={index} className="p-4 bg-[#1e1e2a] rounded-lg border border-[#2a2a3a]">
+                    <div key={index} className="p-4 card-hover rounded-lg">
                       <div className="font-medium">{api.name}</div>
-                      <div className="text-sm text-[#8a8a9a]">{api.endpoint}</div>
+                      <div className="text-sm text-cyber-text-secondary">{api.endpoint}</div>
                       <div className="flex gap-2 mt-4">
                         {api.methods.map((method: string) => (
                           <Badge
                             key={method}
                             variant="outline"
-                            className="bg-[#2a2a3a]/50 border-[#3a3a4a] text-[#aaaaaa]"
+                            className="bg-cyber-border/50 border-cyber-border-light text-cyber-text-tertiary"
                           >
                             {method}
                           </Badge>
@@ -430,11 +426,12 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
 
             <div className="space-y-4 pb-4">
               <Button
+                variant="gradient"
                 onClick={() => {
                   handleApproveStructure()
                   if (isMobile) setShowMobilePanel(false)
                 }}
-                className="w-full bg-gradient-to-r from-[#ff0040] to-[#ff6600] hover:from-[#ff0055] hover:to-[#ff7700] text-black h-10 md:h-12 text-sm md:text-lg font-medium"
+                className="w-full h-10 md:h-12 text-sm md:text-lg font-medium"
               >
                 <Check className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Approve Structure
@@ -446,7 +443,7 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
                   setMessage("I'd like to request changes to ")
                   if (isMobile) setShowMobilePanel(false)
                 }}
-                className="w-full bg-transparent border-[#2a2a3a] text-white hover:bg-[#1e1e2a] h-10 md:h-12 text-sm md:text-lg font-medium"
+                className="w-full h-10 md:h-12 text-sm md:text-lg font-medium"
               >
                 💬 Ask for Changes
               </Button>
@@ -459,28 +456,28 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
       {currentStep === "mcp" && sidePanelVisible && (
         <div className={cn(
           "h-full overflow-y-auto transition-all duration-300",
-          isMobile ? (showMobilePanel ? "fixed inset-x-0 top-16 bottom-0 bg-[#0a0a0f] z-50" : "hidden") : "w-1/2"
+          isMobile ? (showMobilePanel ? "fixed inset-x-0 top-16 bottom-0 bg-cyber-main z-50" : "hidden") : "w-1/2"
         )}>
           <div className="p-4 space-y-4">
             <div className="flex items-center gap-4 mb-4">
-              <Button variant="ghost" size="icon" onClick={handleGoBack} className="hover:bg-[#1e1e2a]">
+              <Button variant="ghost" size="icon" onClick={handleGoBack}>
                 <ArrowLeft className="w-4 h-4" />
               </Button>
               <div>
-                <h3 className="text-2xl font-semibold bg-gradient-to-r from-[#ff0040] to-[#ff6600] bg-clip-text text-transparent">
+                <h3 className="text-2xl font-semibold gradient-text">
                   MCP Configuration
                 </h3>
-                <p className="text-[#8a8a9a]">Configure the Model Context Protocol settings for your app.</p>
+                <p className="text-cyber-text-secondary">Configure the Model Context Protocol settings for your app.</p>
               </div>
             </div>
 
-            <Card className="border-[#2a2a3a] bg-[#12121a]/50">
+            <Card>
               <CardHeader>
-                <CardTitle className="text-[#ff0040]">API Configuration</CardTitle>
+                <CardTitle>API Configuration</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <Label htmlFor="apiKey" className="text-[#aaaaaa] mb-2 block">
+                  <Label htmlFor="apiKey">
                     API Key
                   </Label>
                   <Input
@@ -489,11 +486,10 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
                     value={mcpConfig.apiKey}
                     onChange={(e) => setMcpConfig({ ...mcpConfig, apiKey: e.target.value })}
                     placeholder="Enter your API key"
-                    className="bg-[#1e1e2a] border-[#2a2a3a] focus-visible:ring-[#ff0040]"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="endpoint" className="text-[#aaaaaa] mb-2 block">
+                  <Label htmlFor="endpoint">
                     Endpoint
                   </Label>
                   <Input
@@ -501,11 +497,10 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
                     value={mcpConfig.endpoint}
                     onChange={(e) => setMcpConfig({ ...mcpConfig, endpoint: e.target.value })}
                     placeholder="https://api.example.com"
-                    className="bg-[#1e1e2a] border-[#2a2a3a] focus-visible:ring-[#ff0040]"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="model" className="text-[#aaaaaa] mb-2 block">
+                  <Label htmlFor="model">
                     Model
                   </Label>
                   <Input
@@ -513,7 +508,6 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
                     value={mcpConfig.model}
                     onChange={(e) => setMcpConfig({ ...mcpConfig, model: e.target.value })}
                     placeholder="gpt-4"
-                    className="bg-[#1e1e2a] border-[#2a2a3a] focus-visible:ring-[#ff0040]"
                   />
                 </div>
               </CardContent>
@@ -521,8 +515,9 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
 
             <div className="pb-4">
               <Button
+                variant="gradient"
                 onClick={handleMCPSubmit}
-                className="w-full bg-gradient-to-r from-[#ff0040] to-[#ff6600] hover:from-[#ff0055] hover:to-[#ff7700] text-black h-12 text-lg font-medium"
+                className="w-full h-12 text-lg font-medium"
               >
                 <Settings className="w-5 h-5 mr-2" />
                 Continue to Publish
@@ -536,28 +531,28 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
       {currentStep === "publish" && sidePanelVisible && (
         <div className={cn(
           "h-full overflow-y-auto transition-all duration-300",
-          isMobile ? (showMobilePanel ? "fixed inset-x-0 top-16 bottom-0 bg-[#0a0a0f] z-50" : "hidden") : "w-1/2"
+          isMobile ? (showMobilePanel ? "fixed inset-x-0 top-16 bottom-0 bg-cyber-main z-50" : "hidden") : "w-1/2"
         )}>
           <div className="p-4 space-y-4">
             <div className="flex items-center gap-4 mb-4">
-              <Button variant="ghost" size="icon" onClick={handleGoBack} className="hover:bg-[#1e1e2a]">
+              <Button variant="ghost" size="icon" onClick={handleGoBack}>
                 <ArrowLeft className="w-4 h-4" />
               </Button>
               <div>
-                <h3 className="text-2xl font-semibold bg-gradient-to-r from-[#ff0040] to-[#ff6600] bg-clip-text text-transparent">
+                <h3 className="text-2xl font-semibold gradient-text">
                   Publish Your App
                 </h3>
-                <p className="text-[#8a8a9a]">Add final details and publish your app to make it live.</p>
+                <p className="text-cyber-text-secondary">Add final details and publish your app to make it live.</p>
               </div>
             </div>
 
-            <Card className="border-[#2a2a3a] bg-[#12121a]/50">
+            <Card>
               <CardHeader>
-                <CardTitle className="text-[#ff0040]">App Details</CardTitle>
+                <CardTitle>App Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <Label htmlFor="appName" className="text-[#aaaaaa] mb-2 block">
+                  <Label htmlFor="appName">
                     App Name
                   </Label>
                   <Input
@@ -565,11 +560,10 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
                     value={appDetails.name}
                     onChange={(e) => setAppDetails({ ...appDetails, name: e.target.value })}
                     placeholder="My Awesome App"
-                    className="bg-[#1e1e2a] border-[#2a2a3a] focus-visible:ring-[#ff0040]"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="appDescription" className="text-[#aaaaaa] mb-2 block">
+                  <Label htmlFor="appDescription">
                     Description
                   </Label>
                   <Textarea
@@ -578,7 +572,7 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
                     onChange={(e) => setAppDetails({ ...appDetails, description: e.target.value })}
                     placeholder="Describe what your app does..."
                     rows={4}
-                    className="bg-[#1e1e2a] border-[#2a2a3a] focus-visible:ring-[#ff0040] resize-none"
+                    className="resize-none"
                   />
                 </div>
               </CardContent>
@@ -586,8 +580,9 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
 
             <div className="pb-4">
               <Button
+                variant="gradient"
                 onClick={handlePublish}
-                className="w-full bg-gradient-to-r from-[#ff0040] to-[#ff6600] hover:from-[#ff0055] hover:to-[#ff7700] text-black h-12 text-lg font-medium"
+                className="w-full h-12 text-lg font-medium"
                 disabled={!appDetails.name || !appDetails.description}
               >
                 <Rocket className="w-5 h-5 mr-2" />

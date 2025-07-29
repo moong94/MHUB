@@ -50,29 +50,27 @@ export function CommandPalette({
     <CommandDialog
       open={open}
       onOpenChange={onOpenChange}
-      className="border-[#2a2a3a] bg-[#0a0a0f]/95 backdrop-blur-xl"
     >
       <CommandInput
         placeholder="Type a command or search..."
         value={search}
         onValueChange={setSearch}
-        className="border-b border-[#2a2a3a] bg-transparent"
       />
-      <CommandList className="scrollbar-thin scrollbar-thumb-[#2a2a3a] scrollbar-track-transparent">
+      <CommandList className="scrollbar-thin scrollbar-thumb-cyber-border scrollbar-track-transparent">
         <CommandEmpty>
           <div className="flex flex-col items-center justify-center py-4">
-            <Sparkles className="w-10 h-10 text-[#8a8a9a] mb-2" />
-            <p className="text-[#8a8a9a]">No results found.</p>
+            <Sparkles className="w-10 h-10 text-cyber-text-secondary mb-2" />
+            <p className="text-cyber-text-secondary">No results found.</p>
           </div>
         </CommandEmpty>
 
         <CommandGroup heading="Actions">
-          <CommandItem onSelect={() => handleSelect(onNewChat)} className="hover:bg-[#1e1e2a]">
-            <Plus className="mr-2 h-4 w-4 text-[#ff0040]" />
+          <CommandItem onSelect={() => handleSelect(onNewChat)}>
+            <Plus className="mr-2 h-4 w-4 text-cyber-red" />
             <span>New Chat</span>
           </CommandItem>
-          <CommandItem onSelect={() => handleSelect(onDashboard)} className="hover:bg-[#1e1e2a]">
-            <Grid3X3 className="mr-2 h-4 w-4 text-[#ff6600]" />
+          <CommandItem onSelect={() => handleSelect(onDashboard)}>
+            <Grid3X3 className="mr-2 h-4 w-4 text-cyber-orange" />
             <span>Go to Dashboard</span>
           </CommandItem>
         </CommandGroup>
@@ -90,12 +88,11 @@ export function CommandPalette({
                 <CommandItem
                   key={app.id}
                   onSelect={() => handleSelect(() => onAppClick(app.id))}
-                  className="hover:bg-[#1e1e2a]"
                 >
-                  <Zap className="mr-2 h-4 w-4 text-[#ff0040]" />
+                  <Zap className="mr-2 h-4 w-4 text-cyber-red" />
                   <div className="flex flex-col">
                     <span>{app.name}</span>
-                    <span className="text-xs text-[#8a8a9a]">{app.description}</span>
+                    <span className="text-xs text-cyber-text-secondary">{app.description}</span>
                   </div>
                 </CommandItem>
               ))}
@@ -111,12 +108,11 @@ export function CommandPalette({
                 <CommandItem
                   key={chat.id}
                   onSelect={() => handleSelect(() => onChatClick(chat.id))}
-                  className="hover:bg-[#1e1e2a]"
                 >
-                  <MessageSquare className="mr-2 h-4 w-4 text-[#ff6600]" />
+                  <MessageSquare className="mr-2 h-4 w-4 text-cyber-orange" />
                   <div className="flex flex-col">
                     <span>{chat.title}</span>
-                    <span className="text-xs text-[#8a8a9a]">{new Date(chat.createdAt).toLocaleDateString()}</span>
+                    <span className="text-xs text-cyber-text-secondary">{new Date(chat.createdAt).toLocaleDateString()}</span>
                   </div>
                 </CommandItem>
               ))}

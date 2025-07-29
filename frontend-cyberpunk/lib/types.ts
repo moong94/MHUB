@@ -1,36 +1,20 @@
 export interface AppStructure {
-  framework?: string
-  dependencies?: string[]
   components: Array<{
     name: string
     type: string
     description: string
   }>
-  routes?: string[]
   apis: Array<{
     name: string
     endpoint: string
     methods: string[]
   }>
-  database?: {
-    type?: string
-    tables: string[]
-    relationships?: string[]
-  }
 }
 
 export interface MCPConfig {
-  enabled?: boolean
-  provider?: string
   apiKey: string
   endpoint: string
   model: string
-  models?: string[]
-  settings?: {
-    temperature: number
-    maxTokens: number
-    streaming: boolean
-  }
 }
 
 export interface App {

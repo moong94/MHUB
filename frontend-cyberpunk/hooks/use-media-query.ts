@@ -18,26 +18,6 @@ export function useMediaQuery(query: string): boolean {
   return matches
 }
 
-// 편의성을 위한 사전 정의된 브레이크포인트 훅들
 export function useIsMobile() {
   return useMediaQuery(`(max-width: ${768 - 1}px)`)
-}
-
-export function useIsTablet() {
-  return useMediaQuery(`(min-width: ${768}px) and (max-width: ${1024 - 1}px)`)
-}
-
-export function useIsDesktop() {
-  return useMediaQuery(`(min-width: ${1025}px)`)
-}
-
-export function useBreakpoint() {
-  const isMobile = useIsMobile()
-  const isTablet = useIsTablet()
-  const isDesktop = useIsDesktop()
-  
-  if (isMobile) return 'mobile'
-  if (isTablet) return 'tablet'
-  if (isDesktop) return 'desktop'
-  return 'mobile' // fallback
 } 
