@@ -1,7 +1,7 @@
 "use client"
 
 import { useParams, useRouter } from "next/navigation"
-import { ChatInterface } from "@/components/chat-interface"
+import { ChatInterface } from "./components/chat-interface"
 import { useAppContext } from "@/lib/context"
 import { useEffect } from "react"
 import { App, Chat } from "@/lib/types"
