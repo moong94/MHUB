@@ -11,6 +11,16 @@ interface BuildingPanelProps {
   onCloseMobilePanel?: () => void
 }
 
+const statusMessages = [
+  { icon: Cpu, text: "Initializing system core...", delay: 0 },
+  { icon: Database, text: "Establishing database connection...", delay: 400 },
+  { icon: Network, text: "Configuring network protocols...", delay: 800 },
+  { icon: Code, text: "Loading core modules...", delay: 1200 },
+  { icon: Shield, text: "Activating security layers...", delay: 1600 },
+  { icon: Zap, text: "AI agent ready for deployment...", delay: 2000 },
+  { icon: Rocket, text: "System ready for launch", delay: 2400 },
+]
+
 export function BuildingPanel({ isMobile, showMobilePanel, onCloseMobilePanel }: BuildingPanelProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLDivElement>(null)
@@ -21,16 +31,6 @@ export function BuildingPanel({ isMobile, showMobilePanel, onCloseMobilePanel }:
   
   const [progress, setProgress] = useState(0)
   const [currentStatus, setCurrentStatus] = useState(0)
-  
-  const statusMessages = [
-    { icon: Cpu, text: "Initializing system core...", delay: 0 },
-    { icon: Database, text: "Establishing database connection...", delay: 400 },
-    { icon: Network, text: "Configuring network protocols...", delay: 800 },
-    { icon: Code, text: "Loading core modules...", delay: 1200 },
-    { icon: Shield, text: "Activating security layers...", delay: 1600 },
-    { icon: Zap, text: "AI agent ready for deployment...", delay: 2000 },
-    { icon: Rocket, text: "System ready for launch", delay: 2400 },
-  ]
 
   useEffect(() => {
     if (!containerRef.current) return
