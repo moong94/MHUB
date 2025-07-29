@@ -1,16 +1,15 @@
 "use client"
 
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { AppProvider } from "@/lib/context";
-import { useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
 import { AppSidebar } from "@/components/app-sidebar";
 import { CommandPalette } from "@/components/command-palette";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { useAppContext } from "@/lib/context";
 import { useIsMobile } from "@/hooks/use-media-query";
+import { AppProvider, useAppContext } from "@/lib/context";
 import { Chat } from "@/lib/types";
+import { Geist, Geist_Mono } from "next/font/google";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

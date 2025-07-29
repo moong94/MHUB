@@ -1,15 +1,15 @@
 "use client"
 
-import { useParams, useRouter } from "next/navigation"
-import { useAppContext } from "@/lib/context"
-import { useEffect } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useAppContext } from "@/lib/context"
+import { useParams, useRouter } from "next/navigation"
+import { useEffect } from "react"
 import AppHeader from "./components/app-header"
+import ConfigTab from "./components/config-tab"
+import LogsTab from "./components/logs-tab"
 import MetricsCards from "./components/metrics-cards"
 import OverviewTab from "./components/overview-tab"
 import StructureTab from "./components/structure-tab"
-import ConfigTab from "./components/config-tab"
-import LogsTab from "./components/logs-tab"
 
 export default function AppDetailsPage() {
   const params = useParams()
@@ -49,7 +49,7 @@ export default function AppDetailsPage() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="p-4 space-y-4 pb-4">
+      <div className="p-4 space-y-4">
         {/* 헤더 섹션 */}
         <AppHeader app={app} onBack={handleBackToDashboard} />
 

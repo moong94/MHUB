@@ -1,13 +1,14 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Send, User, Sparkles, ArrowLeft } from "lucide-react"
 import type { Chat } from "@/lib/types"
-import type { CreationStep } from "../hooks/use-app-creation-workflow"
 import { cn } from "@/lib/utils"
+import { ArrowLeft, Send, Sparkles, User } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import type { CreationStep } from "../hooks/use-app-creation-workflow"
+import { WorkflowSteps } from "./workflow-steps"
 
 interface ChatMessageAreaProps {
   chat: Chat
@@ -19,7 +20,9 @@ interface ChatMessageAreaProps {
   onProgressWorkflow: (chat: Chat) => void
   generateAIResponse: (step: CreationStep) => string
   isMobile: boolean
-  workflowStepsComponent: React.ReactNode
+  shouldShowSidePanel: boolean
+  showMobilePanel: boolean
+  setShowMobilePanel: (show: boolean) => void
 }
 
 export function ChatMessageArea({
@@ -32,7 +35,9 @@ export function ChatMessageArea({
   onProgressWorkflow,
   generateAIResponse,
   isMobile,
-  workflowStepsComponent,
+  shouldShowSidePanel,
+  showMobilePanel,
+  setShowMobilePanel,
 }: ChatMessageAreaProps) {
   const [message, setMessage] = useState("")
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -89,7 +94,7 @@ export function ChatMessageArea({
     <>
       {/* 헤더 - 고정 */}
       <div className="p-4 border-b border-cyber-hover flex-shrink-0">
-        <div className="flex items-center gap-4">
+        <div className="flex items-start gap-4">
           <Button 
             variant="ghost" 
             size="icon" 
@@ -100,8 +105,18 @@ export function ChatMessageArea({
           </Button>
           <div className="flex-1 min-w-0">
             <h2 className="text-base md:text-lg font-semibold truncate">{chat.title}</h2>
-            {/* Workflow Steps를 채팅 제목 아래로 이동 */}
-            {workflowStepsComponent}
+            <div className={cn(
+              "flex items-center gap-2 mt-2",
+              isMobile ? "overflow-x-auto scrollbar-none pb-1" : "flex-wrap"
+            )}>
+              <WorkflowSteps
+                currentStep={currentStep}
+                isMobile={isMobile}
+                shouldShowSidePanel={shouldShowSidePanel}
+                showMobilePanel={showMobilePanel}
+                onToggleMobilePanel={() => setShowMobilePanel(!showMobilePanel)}
+              />
+            </div>
           </div>
         </div>
       </div>

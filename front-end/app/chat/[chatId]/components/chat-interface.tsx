@@ -1,15 +1,67 @@
 "use client"
 
-import { ChatMessageArea } from "./chat-message-area"
-import { WorkflowSteps } from "./workflow-steps"
-import { BuildingPanel } from "./building-panel"
-import { StructureReviewPanel } from "./structure-review-panel"
-import { MCPConfigPanel } from "./mcp-config-panel"
-import { PublishAppPanel } from "./publish-app-panel"
+import { Button } from "@/components/ui/button"
+import type { App, Chat } from "@/lib/types"
+import { cn } from "@/lib/utils"
+import { ArrowLeft } from "lucide-react"
 import { useAppCreationWorkflow } from "../hooks/use-app-creation-workflow"
 import { useMobilePanel } from "../hooks/use-mobile-panel"
-import type { Chat, App } from "@/lib/types"
-import { cn } from "@/lib/utils"
+import { BuildingPanel } from "./building-panel"
+import { ChatMessageArea } from "./chat-message-area"
+import { MCPConfigPanel } from "./mcp-config-panel"
+import { PublishAppPanel } from "./publish-app-panel"
+import { StructureReviewPanel } from "./structure-review-panel"
+
+interface SidePanelWrapperProps {
+  children: React.ReactNode
+  title: string
+  description: string
+  isMobile: boolean
+  showMobilePanel: boolean
+  onGoBack: () => void
+  onCloseMobilePanel?: () => void
+}
+
+function SidePanelWrapper({
+  children,
+  title,
+  description,
+  isMobile,
+  showMobilePanel,
+  onGoBack,
+  onCloseMobilePanel,
+}: SidePanelWrapperProps) {
+  return (
+    <div className={cn(
+      "h-full flex flex-col transition-all duration-300 overflow-x-hidden",
+      isMobile ? (showMobilePanel ? "fixed inset-x-0 top-12 h-[calc(100vh-4rem)] bg-cyber-main z-50" : "hidden") : "w-1/2"
+    )}>
+      {/* 헤더 - 고정 */}
+      <div className="bg-cyber-main/95 backdrop-blur-sm border-b border-cyber-border/50 p-4 z-30 flex-shrink-0">
+        <div className="flex items-start gap-4">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={onGoBack} 
+            className="h-8 w-8 md:h-10 md:w-10"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </Button>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base md:text-lg font-semibold gradient-text">
+              {title}
+            </h3>
+            <p className="text-xs md:text-sm text-cyber-text-secondary">
+              {description}
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      {children}
+    </div>
+  )
+}
 
 interface ChatInterfaceProps {
   chatId: string
@@ -73,20 +125,9 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
           onProgressWorkflow={progressToNextStep}
           generateAIResponse={generateAIResponse}
           isMobile={isMobile}
-          workflowStepsComponent={
-            <div className={cn(
-              "flex items-center gap-2 mt-2",
-              isMobile ? "overflow-x-auto scrollbar-none pb-1" : "flex-wrap"
-            )}>
-              <WorkflowSteps
-                currentStep={currentStep}
-                isMobile={isMobile}
-                shouldShowSidePanel={shouldShowSidePanel}
-                showMobilePanel={showMobilePanel}
-                onToggleMobilePanel={() => setShowMobilePanel(!showMobilePanel)}
-              />
-            </div>
-          }
+          shouldShowSidePanel={shouldShowSidePanel}
+          showMobilePanel={showMobilePanel}
+          setShowMobilePanel={setShowMobilePanel}
         />
       </div>
 
@@ -109,41 +150,68 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
 
       {/* Structure Review Section */}
       {currentStep === "structure" && sidePanelVisible && (
-        <StructureReviewPanel
-          appStructure={appStructure}
-          onApprove={handleApproveStructure}
-          onRequestChanges={handleRequestChanges}
-          onGoBack={handleGoBack}
+        <SidePanelWrapper
+          title="App Structure Review"
+          description="Review the generated app structure and data flow patterns."
           isMobile={isMobile}
           showMobilePanel={showMobilePanel}
+          onGoBack={handleGoBack}
           onCloseMobilePanel={() => setShowMobilePanel(false)}
-        />
+        >
+          <StructureReviewPanel
+            appStructure={appStructure}
+            onApprove={handleApproveStructure}
+            onRequestChanges={handleRequestChanges}
+            onGoBack={handleGoBack}
+            isMobile={isMobile}
+            showMobilePanel={showMobilePanel}
+            onCloseMobilePanel={() => setShowMobilePanel(false)}
+          />
+        </SidePanelWrapper>
       )}
 
       {/* MCP Configuration Section */}
       {currentStep === "mcp" && sidePanelVisible && (
-        <MCPConfigPanel
-          mcpConfig={mcpConfig}
-          onConfigChange={setMcpConfig}
-          onSubmit={handleMCPSubmit}
-          onGoBack={handleGoBack}
+        <SidePanelWrapper
+          title="MCP Configuration"
+          description="Configure the Model Context Protocol settings for your app."
           isMobile={isMobile}
           showMobilePanel={showMobilePanel}
+          onGoBack={handleGoBack}
           onCloseMobilePanel={() => setShowMobilePanel(false)}
-        />
+        >
+          <MCPConfigPanel
+            mcpConfig={mcpConfig}
+            onConfigChange={setMcpConfig}
+            onSubmit={handleMCPSubmit}
+            onGoBack={handleGoBack}
+            isMobile={isMobile}
+            showMobilePanel={showMobilePanel}
+            onCloseMobilePanel={() => setShowMobilePanel(false)}
+          />
+        </SidePanelWrapper>
       )}
 
       {/* Publish Section */}
       {currentStep === "publish" && sidePanelVisible && (
-        <PublishAppPanel
-          appDetails={appDetails}
-          onDetailsChange={setAppDetails}
-          onPublish={() => handlePublish(onAppPublished)}
-          onGoBack={handleGoBack}
+        <SidePanelWrapper
+          title="Publish Your App"
+          description="Add final details and publish your app to make it live."
           isMobile={isMobile}
           showMobilePanel={showMobilePanel}
+          onGoBack={handleGoBack}
           onCloseMobilePanel={() => setShowMobilePanel(false)}
-        />
+        >
+          <PublishAppPanel
+            appDetails={appDetails}
+            onDetailsChange={setAppDetails}
+            onPublish={() => handlePublish(onAppPublished)}
+            onGoBack={handleGoBack}
+            isMobile={isMobile}
+            showMobilePanel={showMobilePanel}
+            onCloseMobilePanel={() => setShowMobilePanel(false)}
+          />
+        </SidePanelWrapper>
       )}
     </div>
   )

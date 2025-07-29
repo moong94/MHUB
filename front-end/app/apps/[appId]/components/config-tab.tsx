@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Settings } from "lucide-react"
 import type { App } from "@/lib/types"
+import { Settings } from "lucide-react"
 
 interface ConfigTabProps {
   app: App
@@ -26,17 +26,17 @@ export default function ConfigTab({ app }: ConfigTabProps) {
           MCP Configuration
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-3">
         <div className="p-4 card-hover rounded-lg">
-          <div className="text-sm font-medium text-cyber-text-secondary mb-2">Model</div>
+          <div className="text-sm font-medium text-cyber-text-secondary">Model</div>
           <div>{app.mcpConfig.model}</div>
         </div>
         <div className="p-4 card-hover rounded-lg">
-          <div className="text-sm font-medium text-cyber-text-secondary mb-2">Endpoint</div>
+          <div className="text-sm font-medium text-cyber-text-secondary">Endpoint</div>
           <div>{app.mcpConfig.endpoint || "Not configured"}</div>
         </div>
         <div className="p-4 card-hover rounded-lg">
-          <div className="text-sm font-medium text-cyber-text-secondary mb-2">API Key</div>
+          <div className="text-sm font-medium text-cyber-text-secondary">API Key</div>
           <div>{"*".repeat(20)}</div>
         </div>
       </CardContent>

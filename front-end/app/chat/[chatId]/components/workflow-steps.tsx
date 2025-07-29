@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Bot, Settings, Rocket, Cpu } from "lucide-react"
+import { Bot, Cpu, Rocket, Settings } from "lucide-react"
 import type { CreationStep } from "../hooks/use-app-creation-workflow"
 
 interface WorkflowStepsProps {
@@ -39,12 +39,12 @@ export function WorkflowSteps({
             <step.icon className="w-3 h-3 mr-1" />
             <span className={isMobile ? "hidden sm:inline" : ""}>{step.label}</span>
           </Badge>
-          {index < steps.length - 1 && (
+          <div className="hidden md:block">{index < steps.length - 1 && (
             <div className="flex items-center ml-2">
               <div className="w-3 h-0.5 bg-cyber-border-light"></div>
               <div className="w-0 h-0 border-l-[4px] border-l-cyber-border-light border-y-[3px] border-y-transparent ml-0.5"></div>
             </div>
-          )}
+          )}</div>
         </div>
       ))}
       

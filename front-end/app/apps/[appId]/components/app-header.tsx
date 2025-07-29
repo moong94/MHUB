@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import type { App } from "@/lib/types"
 import { ArrowLeft } from "lucide-react"
 import { useAppStatus } from "../hooks/use-app-status"
-import type { App } from "@/lib/types"
 
 interface AppHeaderProps {
   app: App
@@ -33,7 +33,7 @@ export default function AppHeader({ app, onBack }: AppHeaderProps) {
             </h1>
             <p className="text-cyber-text-secondary mt-2 text-sm md:text-base line-clamp-2">{app.description}</p>
           </div>
-          <Badge variant={getStatusVariant(app.status)} className="shrink-0 mt-2 sm:mt-0">
+          <Badge variant={getStatusVariant(app.status)} className="shrink-0 mt-0 max-w-fit">
             {getStatusIcon(app.status)}
             <span className="ml-2 capitalize">{app.status}</span>
           </Badge>

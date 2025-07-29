@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { cn } from "@/lib/utils"
 import { gsap } from "gsap"
-import { Cpu, Zap, Code, Database, Network, Shield, Rocket } from "lucide-react"
+import { Code, Cpu, Database, Network, Rocket, Shield, Zap } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 
 interface BuildingPanelProps {
   isMobile: boolean
@@ -44,7 +45,9 @@ export function BuildingPanel({ isMobile, showMobilePanel, onCloseMobilePanel }:
     // 초기 설정
     gsap.set(container, { opacity: 0 })
     gsap.set(title, { y: -50, opacity: 0 })
-    gsap.set(progressBar, { scaleX: 0, transformOrigin: "left" })
+    if (progressBar) {
+      progressBar.style.width = '0%'
+    }
     gsap.set(statusList?.children || [], { x: -30, opacity: 0 })
 
     // 메인 애니메이션 타임라인
@@ -80,14 +83,17 @@ export function BuildingPanel({ isMobile, showMobilePanel, onCloseMobilePanel }:
       }
     }, "-=0.3")
 
-    // 진행률 바 애니메이션
-    tl.to(progressBar, { 
-      scaleX: 1, 
+    // 진행률 바 애니메이션 - 점진적으로 채워지는 애니메이션
+    tl.to({ progress: 0 }, { 
+      progress: 100, 
       duration: 2.5, 
       ease: "power2.inOut",
       onUpdate: function() {
-        const prog = Math.round(this.progress() * 100)
+        const prog = Math.round(this.targets()[0].progress)
         setProgress(prog)
+        if (progressBar) {
+          progressBar.style.width = `${prog}%`
+        }
       }
     }, "-=0.2")
 
@@ -142,15 +148,12 @@ export function BuildingPanel({ isMobile, showMobilePanel, onCloseMobilePanel }:
   return (
     <div 
       ref={containerRef}
-      className={`
-        ${isMobile 
-          ? `fixed inset-0 z-50 bg-cyber-main/95 backdrop-blur-sm ${
-              showMobilePanel ? 'block' : 'hidden'
-            }` 
-          : 'w-1/2 border-l border-cyber-hover bg-cyber-main/50 backdrop-blur-sm'
-        }
-        flex items-center justify-center relative overflow-hidden
-      `}
+      className={cn(
+        "flex items-center justify-center relative overflow-hidden",
+        isMobile 
+          ? (showMobilePanel ? "fixed inset-0 bg-cyber-main/95 backdrop-blur-sm z-50" : "hidden")
+          : "w-1/2 border-l border-cyber-hover bg-cyber-main/50 backdrop-blur-sm"
+      )}
       onClick={isMobile && onCloseMobilePanel ? onCloseMobilePanel : undefined}
     >
       {/* 배경 그리드 */}
@@ -182,7 +185,7 @@ export function BuildingPanel({ isMobile, showMobilePanel, onCloseMobilePanel }:
       </div>
 
       {/* 메인 콘텐츠 */}
-      <div className="relative z-10 text-center max-w-md mx-auto px-6">
+      <div className="relative z-10 text-center w-4/5 md:w-3/5 mx-auto px-6">
         {/* 타이틀 */}
         <div ref={titleRef} className="mb-8">
           <div ref={glitchRef} className="text-4xl font-bold text-cyber-red mb-2 font-mono">
@@ -202,7 +205,7 @@ export function BuildingPanel({ isMobile, showMobilePanel, onCloseMobilePanel }:
           <div className="relative h-2 bg-cyber-card rounded-full overflow-hidden border border-cyber-border">
             <div
               ref={progressBarRef}
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-cyber-red via-cyber-orange to-status-active rounded-full"
+              className="absolute inset-y-0 left-0 bg-cyber-red rounded-full"
               style={{
                 boxShadow: `
                   0 0 10px var(--color-cyber-red),
@@ -215,20 +218,20 @@ export function BuildingPanel({ isMobile, showMobilePanel, onCloseMobilePanel }:
         </div>
 
         {/* 상태 메시지 */}
-        <div ref={statusListRef} className="space-y-3">
+        <div ref={statusListRef} className="space-y-3 w-full">
           {statusMessages.map((message, index) => {
             const Icon = message.icon
             return (
               <div
                 key={index}
                 className={`
-                  flex items-center space-x-3 text-sm font-mono
+                  flex items-center space-x-3 text-sm font-mono w-full
                   ${index <= currentStatus ? 'text-cyber-text-secondary' : 'text-cyber-text-tertiary'}
                   ${index === currentStatus ? 'text-cyber-red' : ''}
                 `}
               >
                 <Icon className="w-4 h-4 flex-shrink-0" />
-                <span className="flex-1 text-left">{message.text}</span>
+                <span className="flex-1 text-left truncate min-w-0">{message.text}</span>
                 {index < currentStatus && (
                   <div className="w-2 h-2 bg-status-active rounded-full animate-pulse" />
                 )}

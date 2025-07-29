@@ -1,12 +1,11 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Rocket, ArrowLeft } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { Textarea } from "@/components/ui/textarea"
+import { Rocket } from "lucide-react"
 
 interface AppDetails {
   name: string
@@ -33,28 +32,8 @@ export function PublishAppPanel({
   onCloseMobilePanel,
 }: PublishAppPanelProps) {
   return (
-    <div className={cn(
-      "h-full overflow-y-auto transition-all duration-300",
-      isMobile ? (showMobilePanel ? "fixed inset-x-0 top-16 bottom-0 bg-cyber-main z-50" : "hidden") : "w-1/2"
-    )}>
-      <div className="p-4 space-y-4">
-        <div className="flex items-center gap-4 mb-4">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={isMobile ? onCloseMobilePanel : onGoBack}
-            className="h-8 w-8 md:h-10 md:w-10"
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-          <div>
-            <h3 className="text-lg md:text-2xl font-semibold gradient-text">
-              Publish Your App
-            </h3>
-            <p className="text-xs md:text-sm text-cyber-text-secondary">Add final details and publish your app to make it live.</p>
-          </div>
-        </div>
-
+    <>
+      <div className="flex-1 p-4 space-y-4 overflow-y-auto pb-20">
         <Card>
           <CardHeader>
             <CardTitle>App Details</CardTitle>
@@ -86,12 +65,14 @@ export function PublishAppPanel({
             </div>
           </CardContent>
         </Card>
-
-        <div className="pb-4">
+      </div>
+      
+      <div className="bg-cyber-main/95 backdrop-blur-sm border-t border-cyber-border/50 p-4 z-10 flex-shrink-0">
+        <div className="flex justify-end">
           <Button
             variant="gradient"
             onClick={onPublish}
-            className="w-full h-10 md:h-12 text-sm md:text-lg font-medium"
+            className="h-9 md:h-10 text-sm font-medium px-6"
             disabled={!appDetails.name || !appDetails.description}
           >
             <Rocket className="w-4 h-4 md:w-5 md:h-5 mr-2" />
@@ -99,6 +80,6 @@ export function PublishAppPanel({
           </Button>
         </div>
       </div>
-    </div>
+    </>
   )
 } 
