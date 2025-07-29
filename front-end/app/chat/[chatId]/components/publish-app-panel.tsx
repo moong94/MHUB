@@ -16,20 +16,12 @@ interface PublishAppPanelProps {
   appDetails: AppDetails
   onDetailsChange: (details: AppDetails) => void
   onPublish: () => void
-  onGoBack: () => void
-  isMobile: boolean
-  showMobilePanel?: boolean
-  onCloseMobilePanel?: () => void
 }
 
 export function PublishAppPanel({
   appDetails,
   onDetailsChange,
   onPublish,
-  onGoBack,
-  isMobile,
-  showMobilePanel = true,
-  onCloseMobilePanel,
 }: PublishAppPanelProps) {
   return (
     <>

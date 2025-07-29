@@ -16,20 +16,12 @@ interface MCPConfigPanelProps {
   mcpConfig: MCPConfig
   onConfigChange: (config: MCPConfig) => void
   onSubmit: () => void
-  onGoBack: () => void
-  isMobile: boolean
-  showMobilePanel?: boolean
-  onCloseMobilePanel?: () => void
 }
 
 export function MCPConfigPanel({
   mcpConfig,
   onConfigChange,
   onSubmit,
-  onGoBack,
-  isMobile,
-  showMobilePanel = true,
-  onCloseMobilePanel,
 }: MCPConfigPanelProps) {
   return (
     <>

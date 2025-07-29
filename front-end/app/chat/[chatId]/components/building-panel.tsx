@@ -143,7 +143,7 @@ export function BuildingPanel({ isMobile, showMobilePanel, onCloseMobilePanel }:
       gsap.killTweensOf(progressBar)
       gsap.killTweensOf(glitch)
     }
-  }, [])
+  }, [statusMessages])
 
   return (
     <div 

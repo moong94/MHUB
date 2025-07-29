@@ -29,7 +29,6 @@ function SidePanelWrapper({
   isMobile,
   showMobilePanel,
   onGoBack,
-  onCloseMobilePanel,
 }: SidePanelWrapperProps) {
   return (
     <div className={cn(
@@ -162,9 +161,7 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
             appStructure={appStructure}
             onApprove={handleApproveStructure}
             onRequestChanges={handleRequestChanges}
-            onGoBack={handleGoBack}
             isMobile={isMobile}
-            showMobilePanel={showMobilePanel}
             onCloseMobilePanel={() => setShowMobilePanel(false)}
           />
         </SidePanelWrapper>
@@ -184,10 +181,6 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
             mcpConfig={mcpConfig}
             onConfigChange={setMcpConfig}
             onSubmit={handleMCPSubmit}
-            onGoBack={handleGoBack}
-            isMobile={isMobile}
-            showMobilePanel={showMobilePanel}
-            onCloseMobilePanel={() => setShowMobilePanel(false)}
           />
         </SidePanelWrapper>
       )}
@@ -206,10 +199,6 @@ export function ChatInterface({ chatId, chats, setChats, onAppPublished, onBackT
             appDetails={appDetails}
             onDetailsChange={setAppDetails}
             onPublish={() => handlePublish(onAppPublished)}
-            onGoBack={handleGoBack}
-            isMobile={isMobile}
-            showMobilePanel={showMobilePanel}
-            onCloseMobilePanel={() => setShowMobilePanel(false)}
           />
         </SidePanelWrapper>
       )}

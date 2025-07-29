@@ -2,22 +2,22 @@
 
 import { cn } from "@/lib/utils"
 import {
-    Background,
-    Edge,
-    Handle,
-    Node,
-    Position,
-    ReactFlow
+  Background,
+  Edge,
+  Handle,
+  Node,
+  Position,
+  ReactFlow
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
-import { ArrowDown, Code, Database, Network, Settings } from "lucide-react"
-import { useEffect, useState } from "react"
+import { ArrowDown, Code, Database, LucideProps, Network, Settings } from "lucide-react"
+import { ForwardRefExoticComponent, RefAttributes, useEffect, useState } from "react"
 
 interface MCPStep {
   id: string
   title: string
   description: string
-  icon: any
+  icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>
   connections: string[]
 }
 
@@ -72,7 +72,7 @@ const nodeTypes = {
 }
 
 // 사이버펑크 스타일 커스텀 노드 컴포넌트
-function CyberNode({ data, selected }: any) {
+function CyberNode({ data, selected }: { data: { title: string, description: string, icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>, connections: string[] }, selected: boolean }) {
   const IconComponent = data.icon
   
   return (
@@ -138,7 +138,7 @@ export function AppFlow() {
 
   // React Flow 초기화
   useEffect(() => {
-    const initialNodes: Node[] = mcpSteps.map((step, index) => {
+    const initialNodes: Node[] = mcpSteps.map((step) => {
       const pos = getStepPosition(step.id)
       return {
         id: step.id,

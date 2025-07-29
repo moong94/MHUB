@@ -10,9 +10,7 @@ interface StructureReviewPanelProps {
   appStructure: AppStructure | null
   onApprove: () => void
   onRequestChanges: () => void
-  onGoBack: () => void
   isMobile: boolean
-  showMobilePanel?: boolean
   onCloseMobilePanel?: () => void
 }
 
@@ -20,9 +18,7 @@ export function StructureReviewPanel({
   appStructure,
   onApprove,
   onRequestChanges,
-  onGoBack,
   isMobile,
-  showMobilePanel = true,
   onCloseMobilePanel,
 }: StructureReviewPanelProps) {
   if (!appStructure) return null
