@@ -63,7 +63,7 @@ def search_smithery_mcp_node(state: State) -> State:
     mcp_list_by_question = []
 
     for semantic in semantics:
-        logger.info(f"스미더리 에이전트 검색: {semantic}")
+        logger.info(f"스미더리 검색: {semantic}")
         semantic_split = semantic.split("/")
         mcp_list = []
         for word in semantic_split:
@@ -125,9 +125,17 @@ def search_detail_smithery_mcp_node(state: State) -> State:
             result_dict = json.loads(result)
             logger.info(f"MCP 적합성 판단: {result_dict}")
 
-            if result_dict["check"] == "YES":
-                config["connections"] = data["connections"]
+            # http 타입의 연결만 필터링하여 새 변수에 저장
+            http_connections = []
+            if "connections" in data:
+                http_connections = [conn for conn in data["connections"] if conn.get("type") == "http"]
+
+            logger.info(f"HTTP 연결: {http_connections}")
+
+            if result_dict["check"] == "YES" and len(http_connections) > 0:
+                config["connections"] = http_connections[0]
                 config["qualifiedName"] = data["qualifiedName"]
+                config["query"] = questions[index]
                 break
 
         configs.append(config) 

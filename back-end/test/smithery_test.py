@@ -21,16 +21,16 @@ response = requests.get(
     }
 )
 
-data = response.json()
-all_servers = data["servers"]
-# remote가 true인 서버만 필터링
-remote_servers = [server for server in all_servers if server.get("remote") == True]
-print(">> 스미더리 mcp 검색")
-print(remote_servers)
+# data = response.json()
+# all_servers = data["servers"]
+# # remote가 true인 서버만 필터링
+# remote_servers = [server for server in all_servers if server.get("remote") == True]
+# print(">> 스미더리 mcp 검색")
+# print(remote_servers)
 
 
 
-qualified_name = '@browserbasehq/mcp-browserbase'
+qualified_name = '@imbenrabi/financial-modeling-prep-mcp-server'
 
 response2 = requests.get(
     f'https://registry.smithery.ai/servers/{qualified_name}',
@@ -40,6 +40,6 @@ response2 = requests.get(
     }
 )
 
-# data2 = response2.json()
-# print(">> 스미더리 mcp 상세")
-# print(data2)
+data2 = response2.json()
+print(">> 스미더리 mcp 상세")
+print(data2)

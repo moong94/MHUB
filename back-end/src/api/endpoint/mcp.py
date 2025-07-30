@@ -33,7 +33,7 @@ def search_smithery(request: SmitheryRequest):
     try:
         answer = run_smithery_agent(request.questions)
         logger.info(f"응답 결과: {answer}")
-        return {"answer": answer}
+        return {"smithery_info": answer}
     except Exception as e:
         logger.error(f"에러 발생: {e}")
         raise HTTPException(status_code=500, detail=str(e)) 
